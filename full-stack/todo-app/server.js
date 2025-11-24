@@ -9,7 +9,10 @@ const publicAbsolutePath = path.join(__dirname, "public");
 const hostThePublic = express.static(publicAbsolutePath);
 
 const todoStoreInstance = new TodoStore();
+todoStoreInstance.saveTodo("Go to Market", false)
+todoStoreInstance.saveTodo("Buy Milk", false)
 
+// Middlewares
 app.use(hostThePublic);
 app.use(express.json());
 
@@ -21,17 +24,27 @@ app.get("/welcome", (request, response) => {
   })
 })
 
+app.get("/api/v1/todos", (req, res) => {
+  const allTodos = todoStoreInstance.getAllTodos();
+
+  res.status(200).json({
+    status: true,
+    allTodos: allTodos
+  }) 
+  // res -> headers -> Content-Type: "application/json; charset utf-8"
+})
+
 app.post("/api/v1/todos", (req, res) => {
-  const { taskTitle, taskDescription, isTaskDone } = req.body;
-  if (!taskTitle.trim() || !taskDescription.trim()) {
+  const { taskText, isTaskDone } = req.body;
+  if (!taskText.trim()) {
     res.status(400).json({
       error: true,
       message: "data is not valid, It shouldn't be empty!"
     })
   }
 
-  const newTask = todoStoreInstance.saveTodo(taskTitle, taskDescription, isTaskDone);
-  if (!newTask.taskTitle || !newTask.taskDesciption) {
+  const newTask = todoStoreInstance.saveTodo(taskText, isTaskDone);
+  if (!newTask.taskText) {
     res.status(400).json({
       error: true,
       message: "task is not saved properly!"

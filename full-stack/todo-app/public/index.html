@@ -1,21 +1,33 @@
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>St. Todo Application</title>
-    </head>
-    <body>
-        <h1>Todo List</h1>
 
-        <form id="todo-form">
-            <input id="todo-input" type="text">
-            <button type="submit" id="add-btn">Add todo</button>
-        </form>
+<head>
+    <meta charset="UTF-8">
+    <title>St. Todo Application</title>
+</head>
 
-        <ul id="todo-list">
-            <!-- // Assignment: Clear all the todos by adding the button
-            // todoList.inneHTML = "" -->
-        </ul>
+<body>
 
-        <script src="./app.js"></script>
-    </body>
+    <header>
+        <h1>Todo Application</h1>
+    </header>
+
+    <main>
+        <section>
+            <form id="todo-form">
+                <input id="todo-input" type="text">
+                <button type="submit" id="add-btn">Add todo</button>
+            </form>
+        </section>
+
+        <section>
+            <h3>List of Tasks</h3>
+            <ul id="todo-list">
+                <!-- // Assignment: Clear all the todos by adding the button
+                    // todoList.inneHTML = "" -->
+            </ul>
+        </section>
+    </main>
+    <script src="./app.js"></script>
+</body>
+
 </html>

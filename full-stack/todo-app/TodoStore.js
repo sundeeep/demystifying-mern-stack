@@ -1,19 +1,19 @@
 
 let nextId = 1;
 
-function Task(taskTitle, taskDesciption, isTaskDone){
+function Task(taskText, isTaskDone){
     this.taskId = nextId++;
-    this.taskTitle = taskTitle;
-    this.taskDesciption = taskDesciption;
-    this.isTaskDone = isTaskDone
+    this.taskText = taskText;
+    this.isTaskDone = isTaskDone;
+    this.timeStamp = new Date();
 }
 
 function TodoStore(){
     this.todoStore = [];
 }
 
-TodoStore.prototype.saveTodo = function(taskTitle, taskDesciption, isTaskDone){ 
-    const newTask = new Task(taskTitle, taskDesciption, isTaskDone);
+TodoStore.prototype.saveTodo = function(taskText, isTaskDone){ 
+    const newTask = new Task(taskText, isTaskDone);
     this.todoStore.push(newTask)
     return newTask;
 }
