@@ -3,6 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <title>St. Todo Application</title>
+    <style>
+        #todo-list{
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            gap: 12px;
+        }
+
+        #taskContainer{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+        }
+
+        #taskContent{
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            justify-content: center;
+            gap: 3px;
+        }
+
+        #taskDeleteBtn{
+            background-color: red;
+            border: none;
+            cursor: pointer;
+            font-size: 9px;
+            outline: none;
+            font-weight: bolder;
+            color: white;
+            padding: 4px;
+            border-radius: 8px;
+            margin-left: 24px;
+        }
+        #taskDeleteBtn:hover{
+            background-color: brown;
+        }
+    </style>
 </head>
 
 <body>

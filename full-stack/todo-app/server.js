@@ -33,9 +33,10 @@ app.get("/api/v1/todos", (req, res) => {
 })
 
 app.post("/api/v1/todos", (req, res) => {
-  const { taskText, isTaskDone } = req.body;
+  const { taskText, isTaskDone } = req.body; // Backend developer is expecting taskText and isTaskDone from the request.body = {}
+  // {} Destructuring
 
-  if (!taskText.trim() || typeof taskText !== "string") {
+  if (typeof taskText !== "string" || !taskText.trim()) {
     res.status(400).json({
       error: true,
       message: "Task text should be string and It shouldn't be empty!"
@@ -46,7 +47,7 @@ app.post("/api/v1/todos", (req, res) => {
 
   res.status(201).json({
     success: true,
-    message: "New Task is created successfully!",
+    message: "New Task has been created successfully!",
     newTask: newTask
   })
 

@@ -5,12 +5,13 @@ function Task(taskText, isTaskDone){
     this.taskId = nextId++;
     this.taskText = taskText;
     this.isTaskDone = isTaskDone;
-    this.timeStamp = Date.now();
+    this.timeStamp = new Date();
 }
 
 function TodoStore(){
     this.todoStore = [];
 }
+
 
 TodoStore.prototype.saveTodo = function(taskText, isTaskDone){ 
     const newTask = new Task(taskText, isTaskDone);
