@@ -5,7 +5,7 @@ function Task(taskText, isTaskDone){
     this.taskId = nextId++;
     this.taskText = taskText;
     this.isTaskDone = isTaskDone;
-    this.timeStamp = new Date();
+    this.timeStamp = Date.now();
 }
 
 function TodoStore(){

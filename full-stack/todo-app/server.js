@@ -9,8 +9,6 @@ const publicAbsolutePath = path.join(__dirname, "public");
 const hostThePublic = express.static(publicAbsolutePath);
 
 const todoStoreInstance = new TodoStore();
-todoStoreInstance.saveTodo("Go to Market", false)
-todoStoreInstance.saveTodo("Buy Milk", false)
 
 // Middlewares
 app.use(hostThePublic);
@@ -28,33 +26,30 @@ app.get("/api/v1/todos", (req, res) => {
   const allTodos = todoStoreInstance.getAllTodos();
 
   res.status(200).json({
-    status: true,
-    allTodos: allTodos
+    success: true,
+    allTodos: allTodos // Array of Task Objects [{}, {}, ....{}]
   }) 
-  // res -> headers -> Content-Type: "application/json; charset utf-8"
+  // res -> headers -> Content-Type: "application/json; charset=utf-8"
 })
 
 app.post("/api/v1/todos", (req, res) => {
   const { taskText, isTaskDone } = req.body;
-  if (!taskText.trim()) {
+
+  if (!taskText.trim() || typeof taskText !== "string") {
     res.status(400).json({
       error: true,
-      message: "data is not valid, It shouldn't be empty!"
-    })
+      message: "Task text should be string and It shouldn't be empty!"
+    }) // returned this response
   }
 
   const newTask = todoStoreInstance.saveTodo(taskText, isTaskDone);
-  if (!newTask.taskText) {
-    res.status(400).json({
-      error: true,
-      message: "task is not saved properly!"
-    })
-  }
 
   res.status(201).json({
     success: true,
-    message: "New Task is created successfully!"
+    message: "New Task is created successfully!",
+    newTask: newTask
   })
+
 })
 
 app.get("/", (request, response) => {
