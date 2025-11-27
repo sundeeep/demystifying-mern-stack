@@ -23,15 +23,21 @@ TodoStore.prototype.getAllTodos = function(){
     return this.todoStore;
 }
 
-TodoStore.prototype.toggleTask = function(taskIdToUpdate){
-    const taskWithId = this.todoStore.find((task)=>(task.taskId === taskIdToUpdate));
+TodoStore.prototype.toggleTask = function(taskIdToBeToggled){
+    const taskWithId = this.todoStore.find((task)=> task.taskId === taskIdToBeToggled);
+    console.log(taskWithId);
     taskWithId.isTaskDone = !taskWithId.isTaskDone
-    
-    // if(taskWithId){
-    //     taskWithId.isTaskDone = false
-    // }else{
-    //     taskWithId.isTaskDone = true;
-    // }
+    console.log(this.todoStore);
+    return true;
+}
+
+TodoStore.prototype.deleteTask = function(taskIdToDelete){
+    console.log(typeof taskIdToDelete)
+    const taskIndex = this.todoStore.findIndex((task) => task.taskId === taskIdToDelete);
+    console.log(taskIndex);
+    this.todoStore.splice(taskIndex, 1);
+    console.log(this.todoStore);
+    return true;
 }
 
 

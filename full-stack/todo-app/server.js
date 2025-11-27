@@ -58,6 +58,52 @@ app.get("/", (request, response) => {
   response.sendFile(path.join(__dirname, "public", "index.html"))
 })
 
+app.delete("/api/v1/todos/:taskId", (req, res) => {
+  // console.log(req.params);
+  const {taskId} = req.params; // Object Destructuring
+  console.log(typeof taskId);
+
+  const isTaskDeleted = todoStoreInstance.deleteTask(Number(taskId));
+  if(!isTaskDeleted) {
+    res.status(400).json({
+      error: "true",
+      message: "Task's been not deleted!"
+    })
+  }
+
+  res.status(200).json({
+    success: true,
+    message: "Task's been deleted successfully!"
+  })
+})
+
+app.patch("/api/v1/todos/toggle/:taskId", (req, res) => {
+  const {taskId} = req.params;
+  console.log(typeof taskId);
+
+  if(!taskId){
+    res.status(400).json({
+      error: true,
+      message: "You should pass taskId as param, to toggle it!"
+    })
+  }
+
+  const isTaskToggled = todoStoreInstance.toggleTask(Number(taskId));
+
+  if(!isTaskToggled){
+    res.status(400).json({
+      error: true,
+      message: `Task with ${taskId} hasn't been toggled!` 
+    })
+  }
+
+  res.status(200).json({
+    success: true,
+    message: "Task has been toggled successfully!"
+  })
+
+})
+
 app.listen(PORT, function () {
   console.log("Server is running at port: ", PORT);
 });

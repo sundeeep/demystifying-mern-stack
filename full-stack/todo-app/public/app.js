@@ -2,7 +2,7 @@ const todoForm = document.getElementById("todo-form");
 const todoInput = document.getElementById("todo-input");
 const addBtn = document.getElementById("add-btn");
 const todoList = document.getElementById("todo-list");
-let isTodoListEmpty = true; // flags , booleans
+let isTodoListEmpty = true;
 
 const BASE_URL = "http://localhost:3000"
 
@@ -63,23 +63,52 @@ todoForm.addEventListener("submit", async function (event) {
 })
 
 
-async function deleteTask(taskId){
-    const response = await fetch(`${BASE_URL}/api/v1/todos/${taskId}`, {
+async function deleteTask(taskIdToBeDeleted){
+    console.log(`Deleting the task with ${taskIdToBeDeleted}`)
+    const response = await fetch(`${BASE_URL}/api/v1/todos/${taskIdToBeDeleted}`, {
         method: "DELETE"
     })
+    if(!response.ok){
+        alert("Pass the valid fetch url to delete")
+    }
     const data = await response.json();
+    console.log(data);
+    if(data.success){
+        const listItemToBeRemoved = document.getElementById(taskIdToBeDeleted);
+        listItemToBeRemoved.remove();
+        const listItems = document.querySelectorAll(".taskContainer")
+        // console.log(listItems);
+        if(!listItems.length){
+            console.log("TodoList is Empty!")
+            todoList.innerHTML = "<p>No todos. Please add some tasks.</p>"
+        }
+    }
 }
 
-
+async function toggleTask(taskIdTobeToggled){
+    const response = await fetch(`${BASE_URL}/api/v1/todos/toggle/${taskIdTobeToggled}`, {
+        method: "PATCH"
+    });
+    if(!response.ok){
+        alert("Pass the valid fetch url to toggle patch")
+    }
+    const data = await response.json();
+    console.log(data);
+}
 
 function createListItem(taskObject) {
     const newListItem = document.createElement("li"); // <li></li>
-    newListItem.setAttribute("id", "taskContainer")
+    newListItem.setAttribute("class", "taskContainer")
+    newListItem.setAttribute("id", taskObject.taskId)
+
 
     const isTaskDoneCheckBox = document.createElement('input');
     isTaskDoneCheckBox.setAttribute("type", "checkbox")
 
-    isTaskDoneCheckBox.addEventListener("change", toggleTask)
+    isTaskDoneCheckBox.addEventListener("change", () => toggleTask(taskObject.taskId))
+
+    console.log(isTaskDoneCheckBox.checked)
+    isTaskDoneCheckBox.checked = taskObject.isTaskDone;
 
     // isTaskDoneCheckBox.checked -> true/ false
 
