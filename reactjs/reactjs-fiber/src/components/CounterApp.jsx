@@ -8,22 +8,6 @@ class CounterApp extends Component {
             count: 0,
             username: props.username
         }
-        this.intervalId = null
-    }
-
-    componentDidMount(){
-        this.intervalId = setInterval(()=>{
-            this.setState({})
-        }, 1000);
-    }
-
-    componentDidUpdate(){
-        
-    }
-
-
-    componentWillUnmount(){
-        clearInterval(this.intervalId)
     }
     
     render() { // returns JSX Expression

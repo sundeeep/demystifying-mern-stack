@@ -1,11 +1,11 @@
-import HomePage from "./pages/HomePage.jsx";
+import TimerApp from "./components/TimerApp.jsx";
 
 
 function App(){
 
   return (
     <>
-    <HomePage />
+    <TimerApp />
     </>
   )
 }
