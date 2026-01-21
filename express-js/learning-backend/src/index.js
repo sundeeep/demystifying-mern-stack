@@ -2,6 +2,7 @@ import express from "express";
 import demoRouter from "./routes/demoRoute.js";
 import connectMongoDb from "./config/mongo-db.js";
 import userRouter from "./routes/userRoute.js";
+import bookRouter from "./routes/bookRoute.js";
 
 const app = express();
 
@@ -9,6 +10,7 @@ app.use(express.json());
 
 app.use("/demo", demoRouter)
 app.use("/users", userRouter)
+app.use("/books", bookRouter)
 
 const PORT = 8000;
 
