@@ -4,7 +4,6 @@ function validate(schema){
     return function(req, res, next){
         try {
             const validated = schema.parse(req.body);
-            console.log("Inside validate(): ",validated);
             req.body = validated;
             next();
         } catch (error) {

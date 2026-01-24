@@ -1,4 +1,5 @@
 import Book from "../models/Book.js";
+import { generateAccessToken } from "../utils/jwt-tokens.js";
 
 async function createNewBook(req, res){
     try {
@@ -18,7 +19,14 @@ async function createNewBook(req, res){
 
         res.status(201).json({
             message: "New Book has been created!",
-            data: newBook
+            newBookId: newBook._id,
+            request: {
+                body: req.body,
+                params: req.params,
+                query: req.query,
+                headers: req.headers
+            },
+            jwtToken: generateAccessToken("1234567890")
         })
         
     } catch (error) {
