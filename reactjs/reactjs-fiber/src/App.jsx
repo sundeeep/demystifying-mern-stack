@@ -5,7 +5,7 @@ function App(){
     try {
       const URL = "http://localhost:8000/testing";
       const options = {
-        method: "POST",
+        method: "POST", // POST, GET, PUT, PATCH, DELETE
         body: JSON.stringify({
           name: "Sundeeep Dasari",
           age: 25

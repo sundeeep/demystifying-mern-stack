@@ -7,6 +7,8 @@ const createUserSchema = z.object({
     }).min(3, 'Username must be at least 3 characters')
       .max(50, 'Username must not exceed 50 characters')
       .trim(),
+
+    password: z.string(),
     
     mobile: z.string({
       required_error: 'Mobile number is required'
