@@ -51,7 +51,7 @@ async function startBackendApplication(){
 
 function startHttpServer(){
     app.listen(PORT, async() => {
-            console.log("Server is running!")
+            console.log("Server is running!",PORT)
     })
 }
 

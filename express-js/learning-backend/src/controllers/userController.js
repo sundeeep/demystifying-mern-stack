@@ -42,6 +42,7 @@ async function registerUser(req, res) {
 
 async function loginUser(req, res) {
     try {
+        console.log("LogIn Request Body: ", req.body);
         const { username, password } = req.body;
         // check if user exists, with username, if not throw error
         const existedUser = await User.findOne({ username });
@@ -64,12 +65,12 @@ async function loginUser(req, res) {
         existedUser.refreshToken = refreshToken;
         await existedUser.save()
 
-        // set the browser cookies - accessToken, refreshToken
+        // set the httpOnly cookies - refreshToken
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
             // secure: true, // ONLY  for production: https
             sameSite: 'strict',
-            maxAge: 60 * 60 * 1000
+            maxAge: 7* 24 * 60 * 60 * 1000
         })
 
         // send the response - accessToken, refreshTOken
@@ -119,19 +120,19 @@ async function getUserById(req, res) {
     try {
         const userId = req.params.id;
 
-        const existingUser = await User.exists({_id: userId})
+        const existingUser = await User.exists({ _id: userId })
         console.log("Existing User:", existingUser)
-        if(!existingUser._id){
+        if (!existingUser._id) {
             throw new Error("User doesn't exist!")
         }
 
         const user = await User.findById(userId);
-        
+
         res.status(200).json({
             message: "User found successfully!",
-            userDetails: user
+            user: user
         })
-        
+
     } catch (error) {
         console.error(error);
         res.status(400).json({
@@ -141,10 +142,11 @@ async function getUserById(req, res) {
     }
 }
 
-async function refreshAccessToken(req, res){
+async function refreshAccessToken(req, res) {
     try {
         const refreshToken = req.cookies.refreshToken;
-        if(!refreshToken){
+        console.log("refreshToken from: ",refreshToken)
+        if (!refreshToken) {
             throw new Error("No refresh token found in cookies.")
         }
 
@@ -154,16 +156,18 @@ async function refreshAccessToken(req, res){
 
         const existingUser = await User.findById(userId);
 
-        if(!existingUser._id){
+        if (!existingUser._id) {
             throw new Error("User not found!")
         }
 
         const newAccessToken = generateAccessToken(userId);
 
         res.status(200).json({
+            success: true,
+            message:"Access token has been refreshed successfully!",
             accessToken: newAccessToken
         })
-        
+
     } catch (error) {
         res.status(401).json({
             message: error.message
@@ -171,4 +175,28 @@ async function refreshAccessToken(req, res){
     }
 }
 
-export { registerUser, loginUser, logOut, getUserById, refreshAccessToken };
+async function getMyProfile(req, res) {
+    try {
+        const userId = req.user.userId;
+
+        const existingUser = await User.exists({ _id: userId })
+        console.log("Existing User:", existingUser)
+        if (!existingUser._id) {
+            throw new Error("User doesn't exist!")
+        }
+
+        const user = await User.findById(userId);
+
+        res.status(200).json({
+            message: "User found successfully!",
+            user: user
+        })
+    } catch (error) {
+        res.status(400).json({
+            error: true,
+            message: error.message
+        })
+    }
+}
+
+export { registerUser, loginUser, logOut, getUserById, refreshAccessToken, getMyProfile };

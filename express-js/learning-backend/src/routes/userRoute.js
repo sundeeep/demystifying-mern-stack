@@ -1,5 +1,5 @@
 import express from "express";
-import { registerUser, loginUser, logOut, getUserById, refreshAccessToken } from "../controllers/userController.js";
+import { registerUser, loginUser, logOut, getUserById, refreshAccessToken, getMyProfile } from "../controllers/userController.js";
 import { validate } from "../middlewares/validate.js";
 import { createUserSchema } from "../validators/user.Validator.js";
 import { verifyAccessToken } from "../middlewares/auth.js";
@@ -10,7 +10,7 @@ userRouter.get("/auth/refresh", refreshAccessToken)
 userRouter.post("/register", validate(createUserSchema), registerUser);
 userRouter.post("/login", loginUser);
 userRouter.get("/logout", verifyAccessToken, logOut)
+userRouter.get("/me", verifyAccessToken, getMyProfile)
 userRouter.get("/:id", getUserById)
-// userRouter.get("/me", verifyAccessToken, getMyProfile)
 
 export default userRouter;
