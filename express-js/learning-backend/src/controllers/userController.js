@@ -1,6 +1,7 @@
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import { generateAccessToken, generateRefreshToken } from "../utils/jwt-tokens.js";
+import jwt from "jsonwebtoken";
 
 async function registerUser(req, res) {
     try {
@@ -114,4 +115,60 @@ async function logOut(req, res) {
     }
 }
 
-export { registerUser, loginUser, logOut };
+async function getUserById(req, res) {
+    try {
+        const userId = req.params.id;
+
+        const existingUser = await User.exists({_id: userId})
+        console.log("Existing User:", existingUser)
+        if(!existingUser._id){
+            throw new Error("User doesn't exist!")
+        }
+
+        const user = await User.findById(userId);
+        
+        res.status(200).json({
+            message: "User found successfully!",
+            userDetails: user
+        })
+        
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({
+            error: true,
+            message: error.message
+        })
+    }
+}
+
+async function refreshAccessToken(req, res){
+    try {
+        const refreshToken = req.cookies.refreshToken;
+        if(!refreshToken){
+            throw new Error("No refresh token found in cookies.")
+        }
+
+        const decodedRefreshToken = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+
+        const userId = decodedRefreshToken.userId;
+
+        const existingUser = await User.findById(userId);
+
+        if(!existingUser._id){
+            throw new Error("User not found!")
+        }
+
+        const newAccessToken = generateAccessToken(userId);
+
+        res.status(200).json({
+            accessToken: newAccessToken
+        })
+        
+    } catch (error) {
+        res.status(401).json({
+            message: error.message
+        })
+    }
+}
+
+export { registerUser, loginUser, logOut, getUserById, refreshAccessToken };

@@ -27,7 +27,6 @@ const verifyAccessToken = (req, res, next) => {
             error: true,
             message: error.message
         })
-        
     }
 }
 
